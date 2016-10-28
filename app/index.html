@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Ryanair test</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+
+<body ng-app="ryanairApp">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="header">
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#/">Ryanair</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-controller="mainCtrl">
+        <form name="searchForm" ng-submit="submit()" class="smart-search" novalidate>
+            <div class="row">
+                <div class="col-md-12 flight-choice">
+                    <div class="col-md-6">
+                        <label for="origin">Origin</label>
+                        <input placeholder="Origin airport" required name="origin" id="origin" class="origin" type="text" ng-model="origin" typeahead="state.name for state in states | filter:$viewValue | limitTo:8">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="destination">Destination</label>
+                        <input placeholder="Destination airport" name="destination" required id="destination" class="destination" type="text" ng-model="destination" typeahead="state.name for state in states | filter:$viewValue | limitTo:8">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="datepicker" max-date="nowDate" id="datepicker1" ng-model="startDate" ng-click="dateFrom=true" datepicker-popup="yyyy-MM-dd" is-open="dateFrom">
+                    <input type="text" class="datepicker" min-date="nowDate" id="datepicker2" ng-model="endDate" ng-click="dateTo=true" datepicker-popup="yyyy-MM-dd" is-open="dateTo">
+                    <div class="clear"></div>
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Continue" class="continue-btn">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div ng-if="searchForm.$submitted && searchForm.$valid && !(destination === origin)" list-directive></div>
+        </div>
+        <div class="row">
+            <div class="error" ng-if="searchForm.origin.$error.required && searchForm.$submitted">Please add Origin!</div>
+            <div class="error" ng-if="searchForm.destination.$error.required && searchForm.$submitted">Please add Destination!</div>
+            <div class="error" ng-if="(destination === origin) && searchForm.$submitted && !searchForm.destination.$error.required && !searchForm.origin.$error.required">The Origin and Destination is the same!</div>
+            <div class="error" ng-if="!flightsData.flights.length && searchForm.$submitted && !searchForm.destination.$error.required && !searchForm.origin.$error.required">No flight in this period!</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container"></div>
+    </div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="scripts/factorys/main.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/directives/main.js"></script>
+    <script src="scripts/filters/main.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>
